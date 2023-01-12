@@ -15,6 +15,36 @@ struct Node {
     }
 };
 
+vector<vector<int>> verticalTraversal(TreeNode* root) {
+        vector<vector<int>> res;
+        queue<pair<TreeNode*,pair<int,int>>> q;
+        q.push({root,{0,0}});
+        map<int,map<int,multiset<int>>> mp;
+
+        while(!q.empty()) {
+            auto node = q.front();
+            int v = node.second.first;
+            int level = node.second.second;
+            mp[v][level].insert(node.first->val);
+            q.pop();
+            if(node.first->left != NULL)
+                q.push({node.first->left,{v-1,level+1}});
+            if(node.first->right != NULL)
+                q.push({node.first->right,{v+1,level+1}});
+        }
+
+         for(auto it1:mp) {
+            vector<int> temp;
+            for(auto it2:it1.second) {
+                for(auto it3:it2.second) {
+                    temp.push_back(it3);
+                }
+            }
+            res.push_back(temp);
+        }
+
+        return res;
+}
 
 int main() {
 
